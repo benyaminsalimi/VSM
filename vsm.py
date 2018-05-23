@@ -8,7 +8,7 @@ according to the vector space model."""
 from collections import defaultdict
 import math
 import sys
-
+from functools import *
 # We use a corpus of four documents.  Each document has an id, and
 # these are the keys in the following dict.  The values are the
 # corresponding filenames.
@@ -122,7 +122,7 @@ def do_search():
     """Asks the user what they would like to search for, and returns a
     list of relevant documents, in decreasing order of cosine
     similarity."""
-    query = tokenize(raw_input("Search query >> "))
+    query = tokenize(input("Search query >> "))
     if query == []:
         sys.exit()
     # find document ids containing all query terms.  Works by
@@ -130,15 +130,15 @@ def do_search():
     relevant_document_ids = intersection(
             [set(postings[term].keys()) for term in query])
     if not relevant_document_ids:
-        print "No documents matched all query terms."
+        print ("No documents matched all query terms.")
     else:
         scores = sorted([(id,similarity(query,id))
                          for id in relevant_document_ids],
                         key=lambda x: x[1],
                         reverse=True)
-        print "Score: filename"
+        print ("Score: filename")
         for (id,score) in scores:
-            print str(score)+": "+document_filenames[id]
+            print (str(score)+": "+document_filenames[id])
 
 def intersection(sets):
     """Returns the intersection of all sets in the list sets. Requires
